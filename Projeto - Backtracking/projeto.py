@@ -123,10 +123,8 @@ def order_final(final_states):
 	#print(final_states)
 	final = sorted(final_states, key= len, reverse=False)
 	for item in final:
-		for i in item:
-			print(i, end=' ')
-		print('')
-
+		print(*item)
+	
 
 def move(from_piece, to_piece):
 	
