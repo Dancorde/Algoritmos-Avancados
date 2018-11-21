@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <unordered_map>
+#define ll long long
 
 using namespace std;
 
@@ -9,9 +10,8 @@ vector< vector<int> > check;
 
 vector< vector<int> > s1;
 
-int n_s_d = 0;
-unordered_map <long long,int> pd;
-unordered_map <long long,int> :: iterator it;
+unordered_map <ll,ll> pd;
+unordered_map <ll,ll> :: iterator it;
 
 // print de debug
 void p_debug(vector< vector<int> > v){
@@ -26,7 +26,7 @@ void p_debug(vector< vector<int> > v){
 
 void check_i(int i,	int j){
 
-	p_debug(check);
+	/*p_debug(check);*/
 
 	//cima
 	if(i>0 && check[i-1][j] == 0 && v[i-1][j] != 0){
@@ -59,7 +59,7 @@ void check_i(int i,	int j){
 		check_i(i,j-1);
 	}
 
-	cout << "fim recursao " << endl;
+	/*cout << "fim recursao " << endl;*/
 
 }
 
@@ -75,15 +75,15 @@ int ilhas(int p_i, int p_j){
 		}
 	}
 	
-	cout << "vou pintar a partir dessa matriz " << endl;
-	p_debug(v);	
+	/*cout << "vou pintar a partir dessa matriz " << endl;
+	p_debug(v);	*/
 	check[p_i][p_j] = 1;
 	check_i(p_i,p_j);
 
 	for (int i = 0; i < l; ++i){
 		for (int j = 0; j < c; ++j){
 			if(check[i][j] == 0 && v[i][j] != 0){
-				cout << "Tem ilha ai bixo" << endl;
+				/*cout << "Tem ilha ai bixo" << endl;*/
 				return 1; // achei uma ilha
 			}
 		}
@@ -92,9 +92,9 @@ int ilhas(int p_i, int p_j){
 	return 0; // nao tem ilhas
 }
 
-long long b_4(vector< vector<int> > v){
+ll b_4(vector< vector<int> > v){
 
-	long long resp = 0;
+	ll resp = 0;
 	for (int i = 0; i < v.size(); ++i){
 		for (int j = 0; j < v[i].size(); j++){
 			resp |= v[i][j] << (c*i + j)*2;
@@ -157,14 +157,14 @@ void guarda_solucao(){
 int acha_solucao(int l, int c, int n_pecas){
 	
 	int p_aux; // aux da posicao a ser retirada;
-	int n_maneiras = 0;
+	ll n_maneiras = 0;
 
 
 	if(acabou(n_pecas) == 0){
 
-		cout << "entrei na acha s" << endl;
+		/*cout << "entrei na acha s" << endl;
 		p_debug(v);
-		cout << endl;
+		cout << endl;*/
 
 		for (int i = 0; i < l; ++i){
 			for (int j = 0; j < c; j++){
@@ -282,16 +282,16 @@ int acha_solucao(int l, int c, int n_pecas){
 		pd[b_4(v)] = n_maneiras;	
 		return n_maneiras;
 
-	}else{
+	}else{ // achei solução == resta uma peça
+
+	
+		/*cout << "achei solucao " << n_pecas << endl;
+		p_debug(v);
+		cout << endl;*/
 
 		guarda_solucao();
-		cout << "achei solucao " << n_pecas << endl;
-
-		p_debug(v);
 
 		pd[b_4(v)] = 1;
-
-		cout << endl;
 		return 1;
 	}
 }
