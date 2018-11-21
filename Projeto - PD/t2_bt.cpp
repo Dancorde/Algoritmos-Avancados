@@ -7,6 +7,8 @@ int l,c,aux,n_pecas = 0;
 vector< vector<int> > v;
 vector< vector<int> > check;
 
+vector< vector<int> > s1;
+
 int n_s_d = 0;
 unordered_map <long long,int> pd;
 unordered_map <long long,int> :: iterator it;
@@ -81,6 +83,7 @@ int ilhas(int p_i, int p_j){
 	for (int i = 0; i < l; ++i){
 		for (int j = 0; j < c; ++j){
 			if(check[i][j] == 0 && v[i][j] != 0){
+				cout << "Tem ilha ai bixo" << endl;
 				return 1; // achei uma ilha
 			}
 		}
@@ -129,7 +132,27 @@ int pode_mover(int p1, int p2){
 
 	return 0; 
 }
+void guarda_solucao(){
 
+
+
+	for (int i = 0; i < v.size(); ++i){
+		for (int j = 0; j < v[i].size(); ++j){
+			if(v[i][j] != 0){
+
+				vector<int> m(3);
+				m[0] = i+1;
+				m[1] = j+1;
+				m[2] = v[i][j];
+
+				s1.push_back(m);
+				return;
+			}
+		}
+	}
+
+
+}
 
 int acha_solucao(int l, int c, int n_pecas){
 	
@@ -138,6 +161,7 @@ int acha_solucao(int l, int c, int n_pecas){
 
 
 	if(acabou(n_pecas) == 0){
+
 		cout << "entrei na acha s" << endl;
 		p_debug(v);
 		cout << endl;
@@ -158,13 +182,8 @@ int acha_solucao(int l, int c, int n_pecas){
 						if(it == pd.end()){
 
 							if(ilhas(i-1,j) == 1){
-								pd[v[i-1][j]] = 0;
 
-								v[i][j] = v[i-1][j];
-								v[i-1][j] = p_aux;
-								n_pecas++;
-
-								return 0;
+								pd[b_4(v)] = 0;
 							}else{
 								n_maneiras += acha_solucao(l,c,n_pecas);	
 							}
@@ -190,13 +209,8 @@ int acha_solucao(int l, int c, int n_pecas){
 						if(it == pd.end()){
 
 							if(ilhas(i+1,j) == 1){
-								pd[v[i+1][j]] = 0;
 
-								v[i][j] = v[i+1][j];
-								v[i+1][j] = p_aux;
-								n_pecas++;
-
-								return 0;
+								pd[b_4(v)] = 0;
 							}else{
 								n_maneiras += acha_solucao(l,c,n_pecas);	
 							}
@@ -220,13 +234,9 @@ int acha_solucao(int l, int c, int n_pecas){
 						if(it == pd.end()){
 							
 							if(ilhas(i,j+1) == 1){
-								pd[v[i][j+1]] = 0;
 
-								v[i][j] = v[i][j+1];
-								v[i][j+1] = p_aux;
-								n_pecas++;
-
-								return 0;
+								pd[b_4(v)] = 0;
+								
 							}else{
 								n_maneiras += acha_solucao(l,c,n_pecas);	
 							}
@@ -251,12 +261,9 @@ int acha_solucao(int l, int c, int n_pecas){
 						if(it == pd.end()){
 							if(ilhas(i,j-1) == 1){
 
-								pd[v[i][j-1]] = 0;
-								v[i][j] = v[i][j-1];
-								v[i][j-1] = p_aux;
-								n_pecas++;
+								pd[b_4(v)] = 0;
 
-								return 0;
+
 							}else{
 								n_maneiras += acha_solucao(l,c,n_pecas);	
 							}
@@ -276,6 +283,8 @@ int acha_solucao(int l, int c, int n_pecas){
 		return n_maneiras;
 
 	}else{
+
+		guarda_solucao();
 		cout << "achei solucao " << n_pecas << endl;
 
 		p_debug(v);
@@ -294,6 +303,8 @@ int main (){
 	cin >> l >> c;
 	v.resize(l);
 
+
+
 	for (int i = 0; i < l; ++i){
 		for (int j = 0; j < c; ++j){
 			cin >> aux;
@@ -306,10 +317,21 @@ int main (){
 
 	acha_solucao(l,c,n_pecas);
 
-	cout << "n maneiras " << pd[b_4(v)] << endl;
+	
 
-	for (it = pd.begin(); it != pd.end(); it++){
+	/*for (it = pd.begin(); it != pd.end(); it++){
 		cout << it->first << endl;
+	}	*/
+
+	sort(s1.begin(),s1.end());
+	cout <<  pd[b_4(v)] << endl; // nº de maneiras de chegar em soluções
+	cout << s1.size() << endl; // nº de soluções diferentes
+
+	for (int i = 0; i < s1.size(); ++i){
+		for (int j = 0; j < s1[i].size(); j++){
+			cout << s1[i][j] << " ";
+		}
+		cout << endl;
 	}
 
 }
